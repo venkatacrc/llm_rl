@@ -1,0 +1,39 @@
+# LLM RL Alignment Labs -- pinned-ish dependency set.
+#
+# Target hardware: 8x NVIDIA B200 (Blackwell, sm_100), driver 580.x, CUDA 13.0.
+# Torch/vLLM wheels for Blackwell move fast -- if `python labs/00_setup_and_gpu_tour/check_env.py`
+# reports a CUDA/arch mismatch, reinstall torch from the index printed by that script
+# (https://download.pytorch.org/whl/<channel>) and re-check `vllm` separately (it ships
+# its own torch pin), rather than editing versions here blindly.
+
+# --- Core DL stack ---
+torch>=2.7.0
+transformers>=4.47.0
+accelerate>=1.2.0
+datasets>=3.2.0
+tokenizers>=0.21.0
+safetensors>=0.4.5
+
+# --- RL / alignment ---
+trl>=0.27.0
+peft>=0.14.0
+deepspeed>=0.16.0
+
+# --- Fast rollout generation (labs 03, 05, 06, 07) ---
+vllm>=0.7.0
+
+# --- Reward / eval helpers ---
+math-verify>=0.5.0
+
+# --- Experiment tracking / plotting ---
+matplotlib>=3.9.0
+tensorboard>=2.18.0
+# wandb is optional: only needed if you set WANDB_PROJECT (see environment/env.sh).
+# Every script otherwise logs to a local metrics.csv + PNG (common/utils.py's RunLogger)
+# and TRL's `trl/` scripts log to TensorBoard by default.
+# wandb>=0.18.0
+
+# --- Misc ---
+numpy>=1.26.0,<3.0.0
+tqdm>=4.66.0
+pyyaml>=6.0.2

@@ -1,0 +1,19 @@
+# Plain data-parallel (DDP) across all 8 B200s. Good for models that fit comfortably
+# on a single GPU (<= ~3B params in bf16 with optimizer states) where you just want more
+# throughput, e.g. lab 01/02 SFT/RM runs at larger batch size.
+compute_environment: LOCAL_MACHINE
+debug: false
+distributed_type: MULTI_GPU
+downcast_bf16: 'no'
+gpu_ids: all
+machine_rank: 0
+main_training_function: main
+mixed_precision: bf16
+num_machines: 1
+num_processes: 8
+rdzv_backend: static
+same_network: true
+tpu_env: []
+tpu_use_cluster: false
+tpu_use_sudo: false
+use_cpu: false
