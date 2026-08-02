@@ -50,7 +50,6 @@ def main() -> None:
         per_device_train_batch_size=8,
         gradient_accumulation_steps=4,
         num_generations=8,  # the GRPO "group size" G
-        max_prompt_length=256,
         max_completion_length=512,
         learning_rate=1e-6,
         beta=0.02,  # loss-level KL coefficient, same role as KL_BETA in the scratch script

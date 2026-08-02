@@ -38,7 +38,6 @@ def main() -> None:
         per_device_train_batch_size=8,
         gradient_accumulation_steps=4,
         num_generations=8,  # group size, same role as GROUP_SIZE in lab 05/06 scratch scripts
-        max_prompt_length=256,
         max_completion_length=512,
         learning_rate=1e-6,
         beta=0.02,

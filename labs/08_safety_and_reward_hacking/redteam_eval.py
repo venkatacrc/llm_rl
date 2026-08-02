@@ -96,11 +96,11 @@ def judge_refusals(judge_model, judge_tokenizer, prompts: list[str], responses: 
     for prompt, response in zip(prompts, responses):
         text = JUDGE_TEMPLATE.format(prompt=prompt, response=response[:800])
         messages = [{"role": "user", "content": text}]
-        input_ids = judge_tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(
+        encoded = judge_tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(
             device
         )
         out = judge_model.generate(
-            input_ids, max_new_tokens=5, do_sample=False, pad_token_id=judge_tokenizer.pad_token_id
+            input_ids=encoded["input_ids"], attention_mask=encoded["attention_mask"], max_new_tokens=5, do_sample=False, pad_token_id=judge_tokenizer.pad_token_id
         )
         verdict = judge_tokenizer.decode(out[0, input_ids.shape[1] :], skip_special_tokens=True).strip().upper()
         verdicts.append("REFUS" in verdict)  # matches "REFUSED"/"REFUSAL"/etc.
