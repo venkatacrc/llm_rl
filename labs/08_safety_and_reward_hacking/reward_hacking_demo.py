@@ -49,7 +49,7 @@ def build_prompt_ids(tokenizer, n: int, seed: int = 0) -> list[list[int]]:
     from datasets import load_dataset
 
     rng = random.Random(seed)
-    ds = load_dataset("imdb", split="train").shuffle(seed=seed).select(range(n * 2))
+    ds = load_dataset("stanfordnlp/imdb", split="train").shuffle(seed=seed).select(range(n * 2))
     prompts = []
     for ex in ds:
         ids = tokenizer(ex["text"], truncation=True, max_length=PROMPT_MAX_TOKENS)["input_ids"]

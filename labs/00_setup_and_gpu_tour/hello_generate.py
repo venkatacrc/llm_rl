@@ -38,11 +38,13 @@ def main() -> None:
 
     for prompt in PROMPTS:
         messages = [{"role": "user", "content": prompt}]
-        input_ids = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(
+        encoded = tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors="pt").to(
             "cuda"
         )
+        input_ids = encoded["input_ids"]
+        attention_mask = encoded.get("attention_mask")
         with torch.no_grad():
-            out = model.generate(input_ids, max_new_tokens=128, do_sample=True, temperature=0.7, top_p=0.9)
+            out = model.generate(input_ids, attention_mask=attention_mask, max_new_tokens=128, do_sample=True, temperature=0.7, top_p=0.9)
         response = tokenizer.decode(out[0, input_ids.shape[1] :], skip_special_tokens=True)
         print(f"\n> {prompt}\n{response.strip()}\n{'-' * 60}")
 

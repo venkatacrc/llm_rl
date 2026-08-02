@@ -45,8 +45,8 @@ def main() -> None:
     args = DPOConfig(
         output_dir=str(out_dir),
         logging_dir=str(run_dir("lab04_dpo_trl")),
-        per_device_train_batch_size=8,
-        gradient_accumulation_steps=4,
+        per_device_train_batch_size=4,
+        gradient_accumulation_steps=8,
         learning_rate=5e-7,  # DPO is sensitive to LR; this is the standard "small" DPO LR
         lr_scheduler_type="cosine",
         warmup_ratio=0.1,
@@ -54,7 +54,6 @@ def main() -> None:
         beta=0.1,
         bf16=True,
         max_length=640,
-        max_prompt_length=512,
         logging_steps=10,
         eval_strategy="steps",
         eval_steps=200,

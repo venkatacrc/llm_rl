@@ -63,7 +63,6 @@ def main() -> None:
         undesirable_weight=1.0,
         bf16=True,
         max_length=640,
-        max_prompt_length=512,
         logging_steps=10,
         eval_strategy="steps",
         eval_steps=200,

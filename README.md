@@ -86,6 +86,26 @@ on `/raid`. Source `environment/env.sh` in every new shell you use for these lab
 If `torch`/`vllm` versions drift from what's pinned in [requirements.txt](requirements.txt)
 (Blackwell support moves fast), `check_env.py` will tell you exactly what's mismatched.
 
+### Running everything
+
+Each lab script is meant to be run and read one at a time, but [`run_all_labs.py`](run_all_labs.py)
+can drive the whole curriculum (or any subset of it) for you, in dependency order:
+
+```bash
+python run_all_labs.py --list                  # see every step, and which are skipped by default
+python run_all_labs.py --dry-run                # print the commands without running them
+python run_all_labs.py                          # run the full single-GPU curriculum (labs 00-06, 08)
+python run_all_labs.py --only 01 02 03           # just these labs
+python run_all_labs.py --include-multi-gpu --include-capstone   # + lab 00/07's 8-GPU steps and the full capstone run
+```
+
+It streams each step's output live, tees it to `runs/run_all_labs/<step-id>.log`, and
+prints a pass/fail/skip summary (also written to `runs/run_all_labs/summary.csv`) at the
+end. Steps that depend on optional upstream checkpoints (e.g. the PPO/DPO/KTO comparison,
+alignment-tax, and red-team scripts) are marked best-effort, so a missing checkpoint
+shows up as a graceful skip rather than aborting the whole run; pass `--fail-fast` if you
+want it to stop at the first real failure instead.
+
 ### Multi-GPU
 
 Every "at scale" (`trl/`) script runs single-GPU by default. To scale a script across
@@ -108,6 +128,7 @@ metrics to Weights & Biases.
 
 ```
 llm_rl/
+  run_all_labs.py       # orchestrator: runs any/all labs in order, logs + summarizes results
   common/               # utils.py (seeding, generation, logging), rewards.py (reward fns), paths.py (checkpoint/run dirs)
   configs/accelerate/   # multi-GPU launch configs (DDP / FSDP / DeepSpeed ZeRO-3)
   environment/          # setup.sh, env.sh (generated)

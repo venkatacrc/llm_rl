@@ -92,7 +92,7 @@ def make_collate(tokenizer):
 def build_pairs(n_train: int, n_eval: int, seed: int = 0):
     from datasets import load_dataset
 
-    ds = load_dataset("imdb", split="train").shuffle(seed=seed)
+    ds = load_dataset("stanfordnlp/imdb", split="train").shuffle(seed=seed)
     pos = [ex["text"] for ex in ds if ex["label"] == 1]
     neg = [ex["text"] for ex in ds if ex["label"] == 0]
     n_total = n_train + n_eval
